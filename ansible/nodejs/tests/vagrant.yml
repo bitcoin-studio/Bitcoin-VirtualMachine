@@ -1,0 +1,16 @@
+# test file for nodejs
+---
+- hosts: all
+  remote_user: vagrant
+  become: true
+  roles:
+    - ../../
+
+  post_tasks:
+    - include: post.yml
+
+  vars:
+    nodejs_npm_packages:
+      - name: jslint
+        version: 0.9.6
+      - name: yo

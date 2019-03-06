@@ -1,0 +1,99 @@
+{
+  "variables": {
+    "cpus": "3",
+    "disk_size": "51200",
+    "headless": "false",
+    "memory": "4096",
+    "name": "{{ env `NAME` }}",
+    "preseed_file_name": "preseed.cfg",
+    "ssh_username": "bitcoin",
+    "ssh_password": "bitcoin",
+    "ubuntu_codename": "{{ env `UBUNTU_CODENAME` }}",
+    "ubuntu_mirror": "http://archive.ubuntu.com/ubuntu/dists/"
+  },
+
+  "builders":
+  [
+    {
+      "type": "virtualbox-iso",
+      "boot_command":
+      [
+        "<tab>",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-desktop/{{ user `preseed_file_name` }} ",
+        "auto=true ",
+        "net.ifnames=0 ",
+        "hostname=localhost ",
+        "<enter>"
+      ],
+      "boot_wait": "5s",
+      "disk_size": "{{ user `disk_size` }}",
+      "guest_os_type": "Ubuntu_64",
+      "hard_drive_interface": "sata",
+      "headless": "{{ user `headless` }}",
+      "http_directory": "http",
+      "iso_checksum": "b0bbeca78e7e8a2c4d20d830c015ed12cdb30f6cbedd0f63e7d686c00378953e",
+      "iso_checksum_type": "sha256",
+      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
+      "iso_urls": [
+        "iso/ubuntu1810_desktop.iso",
+        "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso"
+      ],
+      "output_directory": "outputs/{{ user `name` }}-virtualbox-iso",
+      "shutdown_command": "sudo shutdown -P now",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_username": "{{ user `ssh_username` }}",
+      "ssh_wait_timeout": "60m",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--cpus",
+          "{{ user `cpus` }}"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--memory",
+          "{{ user `memory` }}"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--audiocontroller",
+          "hda"
+        ]
+      ],
+      "vm_name": "{{ user `name` }}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "{{ .Vars }} sudo -E bash -x '{{ .Path }}'",
+      "scripts": [
+        "scripts/ubuntu/update.sh",
+        "scripts/linux-common/vagrant.sh"
+      ]
+    },
+    {
+      "type": "ansible",
+      "extra_arguments": [
+        "--extra-vars",
+        "ansible_python_interpreter=/usr/bin/python3"
+      ],
+      "playbook_file": "../ansible/playbook.yml",
+      "user": "bitcoin"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "keep_input_artifact": true,
+        "compression_level": 6,
+        "vagrantfile_template": "../packer/Vagrantfile.template",
+        "output": "../packer/outputs/{{ user `name` }}-{{ .Provider }}.box"
+      }
+    ]
+  ]
+}

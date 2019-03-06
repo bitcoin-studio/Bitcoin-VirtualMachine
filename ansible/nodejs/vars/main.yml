@@ -1,0 +1,18 @@
+# vars file for nodejs
+---
+nodejs_version_map:
+  nodejs-v10x: '10.x'
+  nodejs-v9x: '9.x'
+  nodejs-v8x: '8.x'
+  nodejs-v7x: '7.x'
+  nodejs-v6x: '6.x'
+  nodejs-v5x: '5.x'
+  nodejs-v4x: '4.x'
+  nodejs-v012: '0.12'
+  nodejs-v010: '0.10'
+  iojs-v3x: 'iojs_3.x'
+  iojs-v2x: 'iojs_2.x'
+  iojs-v1x: 'iojs_1.x'
+
+nodejs_dependencies:
+  - curl

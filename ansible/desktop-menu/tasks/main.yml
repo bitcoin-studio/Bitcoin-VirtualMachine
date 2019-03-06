@@ -1,0 +1,18 @@
+---
+# tasks file for desktop-menu
+
+- name: Copy application launchers on desktop
+  become_user: bitcoin
+  copy:
+    src: /usr/share/applications/{{item}}
+    dest: /home/bitcoin/Desktop/{{item}}
+    owner: bitcoin
+    group: bitcoin
+    mode: 0755
+    remote_src: yes
+  with_items:
+    - bitcoin-qt.desktop
+    - brackets.desktop
+    - com.gexperts.Tilix.desktop
+    - org.gnome.Terminal.desktop
+    - vim.desktop

@@ -1,0 +1,25 @@
+# meta file for nodejs
+---
+galaxy_info:
+  role_name: nodejs
+  author: Mischa ter Smitten
+  company: Oefenweb.nl B.V.
+  description: Set up the latest version of Node.js and npm in Debian-like systems
+  license: MIT
+  min_ansible_version: 2.5.0.0
+  platforms:
+    - name: Ubuntu
+      versions:
+        - precise
+        - trusty
+        - xenial
+        - bionic
+    - name: Debian
+      versions:
+        - wheezy
+        - jessie
+        - stretch
+  galaxy_tags:
+    - system
+    - web
+dependencies: []

@@ -1,0 +1,13 @@
+---
+# tasks file for bitcoinJS-guide
+
+- name: Git clone the bitcoinJS guide repository
+  become_user: bitcoin
+  git:
+    repo: "https://github.com/bitcoin-studio/Bitcoin-Programming-with-BitcoinJS.git"
+    dest: "/home/bitcoin/Desktop/BitcoinJS_Guide"
+
+- name: Install npm packages based on package.json
+  become_user: bitcoin
+  npm:
+    path: /home/bitcoin/Desktop/BitcoinJS_Guide/code

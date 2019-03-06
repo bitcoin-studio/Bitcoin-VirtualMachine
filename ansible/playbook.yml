@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - basic
+    - nodejs
+    - bitcoinJS-guide
+    - bitcoin-core
+    - desktop-menu
+...

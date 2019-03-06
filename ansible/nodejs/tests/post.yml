@@ -1,0 +1,13 @@
+# post test file for nodejs
+---
+- name: run tests
+  command: "{{ item }}"
+  changed_when: false
+  with_items:
+    # Ensure Node.js is installed
+    - which node
+    - node -v
+
+    # Ensure npm packages are installed globally
+    - npm list -g --depth=0 jslint
+    - npm list -g --depth=0 yo

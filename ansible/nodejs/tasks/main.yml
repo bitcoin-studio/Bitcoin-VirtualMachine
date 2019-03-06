@@ -1,0 +1,57 @@
+# tasks file for nodejs
+---
+- name: install dependencies
+  apt:
+    name: "{{ nodejs_dependencies }}"
+    state: "{{ apt_install_state | default('latest') }}"
+    update_cache: true
+    cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
+  tags:
+    - configuration
+    - nodejs
+    - nodejs-install
+    - nodejs-install-dependencies
+
+- name: install additional
+  apt:
+    name: "{{ nodejs_install }}"
+    state: "{{ apt_install_state | default('latest') }}"
+  tags:
+    - configuration
+    - nodejs
+    - nodejs-install
+    - nodejs-install-additional
+
+- name: add repository and install its signing key
+  shell: >
+    curl -sL https://deb.nodesource.com/setup_{{ nodejs_version_map[nodejs_version] }} | bash -
+  args:
+    creates: /etc/apt/sources.list.d/nodesource.list
+    warn: false
+  tags:
+    - configuration
+    - nodejs
+    - nodejs-install
+    - nodejs-install-add-repository
+
+- name: install
+  apt:
+    name: "{{ 'nodejs' if 'nodejs' in nodejs_version else 'iojs' }}"
+    state: "{{ apt_install_state | default('latest') }}"
+  tags:
+    - configuration
+    - nodejs
+    - nodejs-install
+    - nodejs-install-install
+
+- name: install node.js packages (globally)
+  npm:
+    name: "{{ item.name }}"
+    version: "{{ item.version | default('latest') }}"
+    global: true
+  with_items: "{{ nodejs_npm_packages }}"
+  tags:
+    - configuration
+    - nodejs
+    - nodejs-npm
+    - nodejs-npm-install

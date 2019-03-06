@@ -1,0 +1,23 @@
+---
+# tasks file for basic
+
+- name: Add repositories
+  become: yes
+  apt_repository: repo='{{item}}' update_cache=yes state=present
+  with_items:
+    - ppa:webupd8team/brackets
+    - ppa:jonathonf/vim
+
+- name: Update repositories cache and install packages
+  become: yes
+  apt:
+    name: [
+      'brackets',
+      'git',
+      'jq',
+      'tilix',
+      'vim'
+    ]
+    state: latest
+    update_cache: yes
+...

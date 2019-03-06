@@ -1,0 +1,93 @@
+---
+sudo: required
+dist: trusty
+
+language: python
+python: "2.7"
+
+env:
+  - ANSIBLE_VERSION=latest
+  - ANSIBLE_VERSION=2.7.6
+  - ANSIBLE_VERSION=2.7.5
+  - ANSIBLE_VERSION=2.7.4
+  - ANSIBLE_VERSION=2.7.3
+  - ANSIBLE_VERSION=2.7.2
+  - ANSIBLE_VERSION=2.7.1
+  - ANSIBLE_VERSION=2.7.0
+  - ANSIBLE_VERSION=2.6.12
+  - ANSIBLE_VERSION=2.6.11
+  - ANSIBLE_VERSION=2.6.10
+  - ANSIBLE_VERSION=2.6.9
+  - ANSIBLE_VERSION=2.6.8
+  - ANSIBLE_VERSION=2.6.7
+  - ANSIBLE_VERSION=2.6.6
+  - ANSIBLE_VERSION=2.6.5
+  - ANSIBLE_VERSION=2.6.4
+  - ANSIBLE_VERSION=2.6.3
+  - ANSIBLE_VERSION=2.6.2
+  - ANSIBLE_VERSION=2.6.1
+  - ANSIBLE_VERSION=2.6.0
+  - ANSIBLE_VERSION=2.5.14
+  - ANSIBLE_VERSION=2.5.13
+  - ANSIBLE_VERSION=2.5.12
+  - ANSIBLE_VERSION=2.5.11
+  - ANSIBLE_VERSION=2.5.10
+  - ANSIBLE_VERSION=2.5.9
+  - ANSIBLE_VERSION=2.5.8
+  - ANSIBLE_VERSION=2.5.7
+  - ANSIBLE_VERSION=2.5.6
+  - ANSIBLE_VERSION=2.5.5
+  - ANSIBLE_VERSION=2.5.4
+  - ANSIBLE_VERSION=2.5.3
+  - ANSIBLE_VERSION=2.5.2
+  - ANSIBLE_VERSION=2.5.1
+  - ANSIBLE_VERSION=2.5.0
+
+branches:
+  only:
+    - master
+
+before_install:
+  - sudo apt-get update -qq
+
+  # Remove nodejs
+  - sudo apt-get remove --purge --yes nodejs
+
+install:
+  # Install Ansible.
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible; else pip install ansible==$ANSIBLE_VERSION; fi
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then pip install ansible-lint; fi
+
+script:
+  # Check the role/playbook's syntax.
+  - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+
+  # Run the role/playbook with ansible-playbook.
+  - ansible-playbook -i tests/inventory tests/test.yml -vvvv
+
+  # Run the role/playbook again, checking to make sure it's idempotent.
+  - >
+    ansible-playbook -i tests/inventory tests/test.yml
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
+
+  # Test nodejs installation
+  - >
+    echo 'console.log("PING".replace("I", "O"));'
+    | nodejs
+    | grep -q 'PONG'
+    && (echo 'Availability test: pass' && exit 0)
+    || (echo 'Availability test: fail' && exit 1)
+
+  - if [ "$ANSIBLE_VERSION" = "latest" ]; then ansible-lint tests/test.yml || true; fi
+
+notifications:
+  email: false
+  hipchat:
+    rooms:
+      secure: O3qDN+ycA8bm1e4ePCnKs8JsM0WXIUurPMiQjyqQwARSUGL7fen+J7AAH+syrA1mtGUFQ/I21vRopUrftYzVKD0JbrVkA3OPjhr5Q/Lmouyfjb4bzs0boGYXxzhG4AOS1475OqusjrEBMEHc25GfW1D4hoLzuf4dzlDHX3ziAaM=
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  slack:
+    rooms:
+      secure: "cBGV2p98wOBxnSfHiou7TE6BKz6X8+v8G+tL9e8TJGprNizfKpRxIuVWFed4qR3BsVDgGiY0Ec43Grt/0x1j0UJPG3OlxqtzwWSSncC4W7cFmEEPba+oZPEUqqDmrG3A5mv/36tmYliSqFv5CUovDZpingM2lp/R+C1wiWOyvsY="

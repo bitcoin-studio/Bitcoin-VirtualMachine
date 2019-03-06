@@ -1,0 +1,41 @@
+---
+# tasks file for bitcoin-core
+
+- name: Add repositories
+  become: yes
+  apt_repository:
+    repo: ppa:bitcoin/bitcoin
+    state: present
+    update_cache: yes
+
+- name: Install Bitcoin Core
+  become: yes
+  apt:
+    name: bitcoin-qt
+    state: latest
+    update_cache: yes
+
+- name: Create Bitcoin Core data directory
+  become_user: bitcoin
+  file:
+    path: /home/bitcoin/.bitcoin
+    state: directory
+    mode: 0755
+
+- name: Copy bitcoin.conf from BitcoinJS_Guide to /home/bitcoin/.bitcoin
+  become_user: bitcoin
+  copy:
+    src: /home/bitcoin/Desktop/BitcoinJS_Guide/code/bitcoin.conf
+    dest: /home/bitcoin/.bitcoin/bitcoin.conf
+    owner: bitcoin
+    group: bitcoin
+    mode: 0644
+    remote_src: yes
+
+- name: Create symbolic link of Bitcoin Core Data directory to Desktop
+  become_user: bitcoin
+  file:
+    src: "/home/bitcoin/.bitcoin"
+    dest: "/home/bitcoin/Desktop/BitcoinCoreData"
+    state: link
+...
