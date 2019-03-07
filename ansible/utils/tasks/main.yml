@@ -1,0 +1,62 @@
+- name: Printing all the environment​ variables in Ansible
+  debug:
+    msg: "{{ ansible_env }}"
+
+# Check if exec exists
+# it returns rc 0 if it exist, rc 1 if not
+- name: Check is make installed
+  shell: command -v make >/dev/null 2>&1
+  register: is_make_exist
+  ignore_errors: yes
+
+- debug: msg="{{ is_make_exist.rc }}"
+- debug: var=is_make_exist
+
+# Check if directory isDir and exists
+# If it is not a directory, the task will be skipped
+- name: Ansible check directory exists example.
+  stat:
+    path: /home/bitcoin/go/src/github.com/lightningnetwork/lnd
+  register: path
+- debug:
+    msg: "It is a directory"
+  when: path.stat.exists and path.stat.isdir
+- debug:
+    msg: "It is executable"
+  when: path.stat.executable
+
+# Check file
+- name: Check that the somefile.conf exists
+  stat:
+    path: /etc/file.txt
+  register: stat_result
+- name: Create the file, if it doesnt exist already
+  file:
+    path: /etc/file.txt
+    state: touch
+  when: stat_result.stat.exists == False
+
+# Go
+- name: check go version
+  command: go version
+  register: result
+  changed_when: no
+  ignore_errors: true
+
+- set_fact:
+    go_path: "{{ lookup('env', 'GOPATH') | default(ansible_env.HOME+'/go', true) }}"
+  when: not result|failed
+
+- name: go get gogs
+  shell: go get -u github.com/gogits/gogs
+  environment:
+    GOPATH: "{{ go_path }}"
+  register: gogs
+  when: not result|failed
+
+- debug: var=gogs
+
+# check path
+- name: check gopath
+  debug:
+    msg: "{{ lookup('env', 'GOPATH') }}"

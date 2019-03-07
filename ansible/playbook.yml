@@ -3,8 +3,11 @@
   become: yes
   roles:
     - basic
+    - go
     - nodejs
     - bitcoinJS-guide
     - bitcoin-core
     - desktop-menu
+    - lnd
+    - zsh
 ...

@@ -1,0 +1,27 @@
+---
+# tasks file for zsh
+
+- name: Install ZSH
+  become: yes
+  apt:
+    name: zsh
+    state: latest
+    update_cache: yes
+
+- name: Install antigen
+  become_user: bitcoin
+  shell: 'curl -L git.io/antigen > /home/bitcoin/antigen.zsh'
+  args:
+    warn: false
+
+- name: Create a .zshrc
+  become_user: bitcoin
+  copy:
+    src: ../files/.zshrc
+    dest: /home/bitcoin/.zshrc
+    owner: bitcoin
+    group: bitcoin
+    mode: 0644
+
+- name: Make zsh shell the default
+  shell: 'chsh  -s /usr/bin/zsh bitcoin'

@@ -1,7 +1,7 @@
 # Machine image builder focused on Bitcoin
 
 This repository is made of three technologies, Packer, Vagrant and Ansible, that allows us to create a Ubuntu 18.10 
-Virtualbox image (and Vagrant box) with a few stuff for Bitcoin. 
+Virtualbox image (and Vagrant box) with a few stuff for Bitcoin / Lightning Network. 
 The image is ideal for Bitcoin workshops, hackathons, etc. 
 
 
@@ -14,13 +14,18 @@ The [preseed.cfg](packer/http/ubuntu-desktop/preseed.cfg) file is used to do an 
 
 ### Softwares
 
+- Code editors: Brackets, Vim
 - Bitcoin Core (latest) from the [Bitcoin PPA](https://launchpad.net/~bitcoin/+archive/ubuntu/bitcoin) 
   - Using the bitcoin.conf from the BitcoinJS guide
   - Set on Regtest mode
+- LND  
+- Libbitcoin-explorer (bx)
+- Electrum
 - Node.js (v10)
-- Code editors: Brackets, Vim
+- Go (v1.11.5)
 - JQ
 - Tilix
+- ZSH (Antigen)
 
 ### BitcoinJS guide
 
@@ -137,6 +142,13 @@ $ vagrant plugin install vagrant-vbguest
 Create a new role with all the boilerplate
 ```
 $ ansible-galaxy init ROLE
+```
+
+Check playbooks syntax
+> It is useful to execute it before running a packer build
+```
+$ cd ansible
+$ ansible-playbook playbook.yml --syntax-check
 ```
 
 

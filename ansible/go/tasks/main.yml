@@ -1,0 +1,23 @@
+---
+# tasks file for go
+
+- name: Download Go
+  become_user: bitcoin
+  get_url:
+    url: https://dl.google.com/go/go1.11.5.linux-amd64.tar.gz
+    dest: /home/bitcoin/Downloads
+    checksum: sha256:ff54aafedff961eb94792487e827515da683d61a5f9482f668008832631e5d25
+
+- name: Unarchive and move Go to /usr/local
+  unarchive:
+    src: /home/bitcoin/Downloads/go1.11.5.linux-amd64.tar.gz
+    dest: /usr/local
+    remote_src: yes
+
+- name: Update PATH with Go path
+  lineinfile:
+    path: /home/bitcoin/.profile
+    line: "{{item}}"
+  with_items:
+    - 'GOPATH=$HOME/go'
+    - 'PATH=$PATH:/usr/local/go/bin:$GOPATH/bin'

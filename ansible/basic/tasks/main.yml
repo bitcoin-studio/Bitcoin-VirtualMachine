@@ -1,6 +1,10 @@
 ---
 # tasks file for basic
 
+- name: Printing all the environment​ variables in Ansible
+  debug:
+    msg: "{{ ansible_env }}"
+
 - name: Add repositories
   become: yes
   apt_repository: repo='{{item}}' update_cache=yes state=present
@@ -13,6 +17,7 @@
   apt:
     name: [
       'brackets',
+      'curl',
       'git',
       'jq',
       'tilix',
@@ -20,4 +25,19 @@
     ]
     state: latest
     update_cache: yes
+
+- name: Download Libbitcoin-explorer
+  become_user: bitcoin
+  get_url:
+    url: https://github.com/libbitcoin/libbitcoin-explorer/releases/download/v3.2.0/bx-linux-x64-qrcode
+    dest: /home/bitcoin/Desktop/bx
+    force: yes
+    mode: 0755
+
+- name: Download Electrum
+  become_user: bitcoin
+  get_url:
+    url: https://download.electrum.org/3.3.4/electrum-3.3.4-x86_64.AppImage
+    dest: /home/bitcoin/Desktop/Electrum
+    mode: 0755
 ...
