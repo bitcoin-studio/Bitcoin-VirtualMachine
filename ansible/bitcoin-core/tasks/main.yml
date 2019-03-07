@@ -8,10 +8,10 @@
     state: present
     update_cache: yes
 
-- name: Install Bitcoin Core
+- name: Install Bitcoin Core (bitcoind, bitcoin-cli, bitcoin-qt)
   become: yes
   apt:
-    name: bitcoin-qt
+    name: ['bitcoind', 'bitcoin-qt']
     state: latest
     update_cache: yes
 

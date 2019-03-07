@@ -1,0 +1,30 @@
+---
+# tasks file for c-lightning
+
+- name: Install packages for c-lightning
+  become: yes
+  apt:
+    name: [
+      'autoconf',
+      'automake',
+      'build-essential',
+      'libtool',
+      'libgmp-dev',
+      'libsqlite3-dev',
+      'libsodium-dev',
+      'net-tools',
+      'zlib1g-dev'
+    ]
+    state: latest
+
+- name: Git clone c-lightning
+  become_user: bitcoin
+  git:
+    repo: 'https://github.com/ElementsProject/lightning.git'
+    dest: /home/bitcoin/Downloads/c-lightning
+
+- name: Compile c-lightning
+  become_user: bitcoin
+  shell: ./configure && make && make install
+  args:
+    chdir: /home/bitcoin/Downloads/c-lightning

@@ -7,6 +7,9 @@ The image is ideal for Bitcoin workshops, hackathons, etc.
 
 ## What is inside
 
+The VirtualBox image itself is not included in this repository, you need to generate it yourself with the `packer build` command, see below.
+It usually takes between 30 minutes and 2 hours, depending on your internet connection and the speed of the Ubuntu mirror server.
+
 ### Operating System
 
 Ubuntu 18.10 Cosmic - desktop version.
@@ -14,18 +17,37 @@ The [preseed.cfg](packer/http/ubuntu-desktop/preseed.cfg) file is used to do an 
 
 ### Softwares
 
-- Code editors: Brackets, Vim
 - Bitcoin Core (latest) from the [Bitcoin PPA](https://launchpad.net/~bitcoin/+archive/ubuntu/bitcoin) 
   - Using the bitcoin.conf from the BitcoinJS guide
   - Set on Regtest mode
-- LND  
-- Libbitcoin-explorer (bx)
-- Electrum
-- Node.js (v10)
-- Go (v1.11.5)
-- JQ
-- Tilix
-- ZSH (Antigen)
+
+- Lightning Network  
+  - LND
+  - c-lightning  
+  
+- Wallets
+  - Electrum  
+
+- Terminal
+  - ZSH (Antigen)
+  - Tilix
+    
+- Code editors
+  - Brackets
+  - Vim
+
+- Programming languages, compilers, ...
+  - C
+  - Node.js (v10)
+  - Go (v1.11.5)  
+
+- Various libraries
+  - Libbitcoin-explorer (bx)
+  - JQ
+
+
+You can deactivate installation of what you don't want by removing roles in the main [playbook](ansible/playbook.yml).
+
 
 ### BitcoinJS guide
 

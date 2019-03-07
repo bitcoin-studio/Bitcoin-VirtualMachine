@@ -38,6 +38,6 @@
   become_user: bitcoin
   get_url:
     url: https://download.electrum.org/3.3.4/electrum-3.3.4-x86_64.AppImage
-    dest: /home/bitcoin/Desktop/Electrum
+    dest: /home/bitcoin/Desktop/Electrum.AppImage
     mode: 0755
 ...

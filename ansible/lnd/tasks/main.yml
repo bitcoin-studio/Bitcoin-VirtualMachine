@@ -16,3 +16,19 @@
     - PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/usr/local/go/bin:/home/bitcoin/go/bin
   args:
     chdir: /home/bitcoin/go/src/github.com/lightningnetwork/lnd/
+
+- name: Create LND data directory
+  become_user: bitcoin
+  file:
+    path: /home/bitcoin/.lnd
+    state: directory
+    mode: 0755
+
+- name: Copy lnd.conf
+  become_user: bitcoin
+  copy:
+    src: ../files/lnd.conf
+    dest: /home/bitcoin/.lnd/lnd.conf
+    owner: bitcoin
+    group: bitcoin
+    mode: 0644

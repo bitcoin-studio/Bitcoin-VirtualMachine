@@ -9,5 +9,6 @@
     - bitcoin-core
     - desktop-menu
     - lnd
+    - c-lightning
     - zsh
 ...
