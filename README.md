@@ -1,8 +1,9 @@
 # Machine image builder focused on Bitcoin
 
-This repository is made of three technologies, Packer, Vagrant and Ansible, that allows us to create a Ubuntu 18.10 
-Virtualbox image (and Vagrant box) with a few stuff for Bitcoin / Lightning Network. 
-The image is ideal for Bitcoin workshops, hackathons, etc. 
+This tool is made of three technologies, Packer, Vagrant and Ansible, allowing us to generate an Ubuntu 18.10 VirtualBox 
+image (and Vagrant box) packaged with softwares for Bitcoin / Lightning Network. You can find Bitcoin Core, LND, c-lightning, 
+Electrum, a BitcoinJS guide, etc. <br/>
+The image is ideal for Bitcoin workshops, hackathons, etc.
 
 
 ## What is inside
@@ -19,7 +20,7 @@ The [preseed.cfg](packer/http/ubuntu-desktop/preseed.cfg) file is used to do an 
 
 - Bitcoin Core (latest) from the [Bitcoin PPA](https://launchpad.net/~bitcoin/+archive/ubuntu/bitcoin) 
   - Using the bitcoin.conf from the BitcoinJS guide
-  - Set on Regtest mode
+  - Set by default on Regtest mode
 
 - Lightning Network  
   - LND
