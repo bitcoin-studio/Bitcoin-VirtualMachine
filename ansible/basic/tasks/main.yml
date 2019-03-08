@@ -19,6 +19,7 @@
       'brackets',
       'curl',
       'git',
+      'gnome-tweak-tools',
       'jq',
       'tilix',
       'vim'

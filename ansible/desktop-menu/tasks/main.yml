@@ -15,5 +15,6 @@
     - brackets.desktop
     - com.gexperts.Tilix.desktop
     - org.gnome.Terminal.desktop
+    - org.gnome.tweaks.desktop
     - seahorse.desktop
     - vim.desktop
