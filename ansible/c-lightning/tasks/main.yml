@@ -24,7 +24,6 @@
     dest: /home/bitcoin/Downloads/c-lightning
 
 - name: Compile c-lightning
-  become_user: bitcoin
   shell: ./configure && make && make install
   args:
     chdir: /home/bitcoin/Downloads/c-lightning

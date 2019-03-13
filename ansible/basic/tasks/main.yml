@@ -11,6 +11,9 @@
   with_items:
     - ppa:webupd8team/brackets
     - ppa:jonathonf/vim
+    - deb http://archive.ubuntu.com/ubuntu/ cosmic universe
+    - deb http://archive.ubuntu.com/ubuntu/ cosmic-updates universe
+    - deb http://security.ubuntu.com/ubuntu/ cosmic-security universe
 
 - name: Update repositories cache and install packages
   become: yes
@@ -19,7 +22,7 @@
       'brackets',
       'curl',
       'git',
-      'gnome-tweak-tools',
+      'gnome-tweak-tool',
       'jq',
       'tilix',
       'vim'
