@@ -56,14 +56,22 @@ Included right on the desktop is the extensive [BitcoinJS guide](https://github.
 made by Stéphane Roche from Bitcoin-Studio. You can explore it to learn how to do all kinds of Bitcoin transaction.
 
 
-## How to launch the VM
+## How to import and launch the VM
 
 There are two ways to launch the VM, from VirtualBox or from Vagrant.
 
-In the `packer/outputs` directory, you can open the `.ovf` image to import it into VirtualBox, or you can import the 
-`.vmdk` image from VirtualBox.
+### Using VirtualBox
 
-With Vagrant, you have to add the Vagrant box to Vagrant and run it. See below.
+After a build you will find two files in the `packer/outputs` directory, a .ovf and a .vmdk.  
+To import the image into VirtualBox you can double-click on the `.ovf` file or select it from the VirtualBox import panel.
+
+You have to uncheck "Import hard drives as VDI", otherwise you get a `NS_ERROR_INVALID_ARG (0x80070057)` error.
+
+After importation you can select it and click start.
+
+### Using Vagrant
+
+With Vagrant, you have to add the Vagrant box to Vagrant and run it. See the Vagrant section below.
 
 
 ## How to login
@@ -173,6 +181,15 @@ Check playbooks syntax
 $ cd ansible
 $ ansible-playbook playbook.yml --syntax-check
 ```
+
+
+## Troubleshooting
+
+#### The font is too small
+You can increase the scale factor in Virtual Box and/or in Gnome-Tweak-Tool present on the desktop.
+
+#### The display is buggy after a resize
+Changing the "resize" and "scale" from `View > Virtual Screen 1` VirtualBox menu should fix it.
 
 
 ## Open Source 
