@@ -110,22 +110,25 @@ If the OS installation is too slow you can set an other Ubuntu mirror in the
 
 ### Vagrant
 
+In order to run our box we can `add` the one created by packer.
+Or if you don't add the box, `vagrant init` will simply import the one hosted on [Vagrant Cloud](https://app.vagrantup.com/bitcoin-studio/boxes/Bitcoin-VirtualMachine).
+
 Add the box to Vagrant
 ```
-$ vagrant box add --name ubuntu1810-bitcoin packer/outputs/bitcoin-virtual-machine.box
+$ vagrant box add --name bitcoin-studio/Bitcoin-VirtualMachine packer/outputs/bitcoin-virtual-machine.box
 ```
 
 Launch the VM
 > We need to cd into `./vagrant` because the ssh keys are there, and to have everything Vagrant related in this directory
 ```
 $ cd vagrant
-$ vagrant init ubuntu1810-bitcoin
+$ vagrant init bitcoin-studio/Bitcoin-VirtualMachine
 $ vagrant up
 ```
 
 Run the Ansible provisioning against the vagrant box
 ```
-$ vagrant provision ubuntu1810-bitcoin
+$ vagrant provision bitcoin-studio/Bitcoin-VirtualMachine
 ```
 
 Print the Vagrantfile included in the box
