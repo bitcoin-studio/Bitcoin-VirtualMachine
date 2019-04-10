@@ -1,5 +1,6 @@
 {
   "variables": {
+    "cloud_token": "{{ env `VAGRANT_CLOUD_TOKEN` }}",
     "cpus": "3",
     "disk_size": "51200",
     "headless": "false",
@@ -9,7 +10,8 @@
     "ssh_username": "bitcoin",
     "ssh_password": "bitcoin",
     "ubuntu_codename": "{{ env `UBUNTU_CODENAME` }}",
-    "ubuntu_mirror": "http://archive.ubuntu.com/ubuntu/dists/"
+    "ubuntu_mirror": "http://archive.ubuntu.com/ubuntu/dists/",
+    "version": "1.0.{{timestamp}}"
   },
 
   "builders":
@@ -93,6 +95,14 @@
         "compression_level": 6,
         "vagrantfile_template": "../packer/Vagrantfile.template",
         "output": "../packer/outputs/{{ user `name` }}-{{ .Provider }}.box"
+      },
+      {
+        "type": "vagrant-cloud",
+        "access_token": "{{user `cloud_token`}}",
+        "box_tag": "bitcoin-studio/Bitcoin-VirtualMachine",
+        "no_release": false,
+        "version_description": "Ubuntu 18.10 VirtualBox image packaged with softwares for Bitcoin / Lightning Network. You can find Bitcoin Core, LND, c-lightning, Electrum, a BitcoinJS guide, etc. \nThe image is ideal for Bitcoin workshops, hackathons, etc.",
+        "version": "{{user `version`}}"
       }
     ]
   ]
