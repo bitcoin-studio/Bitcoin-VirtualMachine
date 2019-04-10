@@ -94,12 +94,12 @@ Ansible is used to provision the virtual image.
 Generate the virtualbox image and the vagrant box
 ```
 $ cd packer
-$ NAME=ubuntu-18.10-desktop-amd64 UBUNTU_CODENAME=cosmic packer build -force ubuntu-desktop.json 
+$ NAME=bitcoin-virtual-machine UBUNTU_CODENAME=cosmic packer build -force ubuntu-desktop.json 
 ```
 
 And with more logs 
 ```
-$ PACKER_LOG=1 NAME=ubuntu-18.10-desktop-amd64 UBUNTU_CODENAME=cosmic packer build -force -on-error=ask ubuntu-desktop.json
+$ PACKER_LOG=1 NAME=bitcoin-virtual-machine UBUNTU_CODENAME=cosmic packer build -force -on-error=ask ubuntu-desktop.json
 ```
 
 #### Setting a Ubuntu mirror server
@@ -112,7 +112,7 @@ If the OS installation is too slow you can set an other Ubuntu mirror in the
 
 Add the box to Vagrant
 ```
-$ vagrant box add --name ubuntu1810-bitcoin packer/outputs/ubuntu-18.10-desktop-amd64-virtualbox.box
+$ vagrant box add --name ubuntu1810-bitcoin packer/outputs/bitcoin-virtual-machine.box
 ```
 
 Launch the VM
@@ -130,7 +130,7 @@ $ vagrant provision ubuntu1810-bitcoin
 
 Print the Vagrantfile included in the box
 ```
-$ tar -O -xf packer/outputs/ubuntu-18.10-desktop-amd64-virtualbox.box Vagrantfile
+$ tar -O -xf packer/outputs/bitcoin-virtual-machine.box Vagrantfile
 ```
 
 #### SSH connection to VM via vagrant
