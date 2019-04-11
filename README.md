@@ -90,16 +90,23 @@ We use Packer to create the VirtualBox virtual image and a vagrant box.
 Ansible is used to provision the virtual image.
 
 ### Packer
+> You will need to remove the `vagrant-cloud` post-processor from [packer/ubuntu-desktop.json](packer/ubuntu-desktop.json)
+> to avoid Vagrant Cloud authentication error. 
+
+Avoid Ansible failing with `Failed to connect to the host via ssh`
+```
+$ export ANSIBLE_HOST_KEY_CHECKING=False
+```
 
 Generate the virtualbox image and the vagrant box
 ```
 $ cd packer
-$ NAME=bitcoin-virtual-machine UBUNTU_CODENAME=cosmic packer build -force ubuntu-desktop.json 
+$ PACKER_LOG=1 PACKER_LOG_PATH=packer.log NAME=bitcoin-virtual-machine UBUNTU_CODENAME=cosmic packer build -force -on-error=ask ubuntu-desktop.json
 ```
 
-And with more logs 
+Keep an eye on the log
 ```
-$ PACKER_LOG=1 NAME=bitcoin-virtual-machine UBUNTU_CODENAME=cosmic packer build -force -on-error=ask ubuntu-desktop.json
+$ tail -f packer.log
 ```
 
 #### Setting a Ubuntu mirror server
@@ -147,9 +154,9 @@ $ ssh-keygen
 ```
 
 The script [vagrant.sh](packer/scripts/linux-common/vagrant.sh) is used by Ansible to copy the ssh public key to the VM. 
-The key is hardcoded there, change it if needed.
+The key is hardcoded there, if you generate a new key pair you have to replace the public key in the script.
 
-If you want to copy the ssh public key to the VM manually
+If you prefer to copy the ssh public key to the VM manually instead of using the script
 ```
 $ cd vagrant
 $ cat vagrant-rsa.pub | ssh bitcoin@127.0.0.1 -p 2222 "mkdir -p ~/.ssh && touch ~/.ssh/authorized_keys && chmod -R go= ~/.ssh && cat >> ~/.ssh/authorized_keys"
