@@ -1,4 +1,30 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+credentials
+
+
+### Packer template
+# Cache objects
+packer/packer_cache/
+
+# For built boxes
+packer/outputs/*
+
+packer/packer.log
+
+
+### Vagrant template
+# General
+vagrant/.vagrant/
+
+# Log files (if you are creating logs in debug mode, uncomment this)
+# *.logs
+
+## Ansible
+ansible/playbook.retry
+
+
+
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
@@ -137,22 +163,3 @@ crash.log
 # version control.
 #
 # example.tfvars
-
-### Packer template
-# Cache objects
-packer/packer_cache/
-
-# For built boxes
-packer/outputs/*
-
-credentials
-
-### Vagrant template
-# General
-vagrant/.vagrant/
-
-# Log files (if you are creating logs in debug mode, uncomment this)
-# *.logs
-
-## Ansible
-ansible/playbook.retry
