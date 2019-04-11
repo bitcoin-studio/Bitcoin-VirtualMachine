@@ -1,5 +1,9 @@
 # Machine image builder focused on Bitcoin
 
+**Quick Start**: _Install Vagrant and Virtualbox. Then open a CLI terminal, and run `vagrant init bitcoin-studio/Bitcoin-VirtualMachine; vagrant up; vagrant ssh`. You're now in an environment with lnd and other Bitcoin tools. If that doesn't work, read further on in this guide for more details._
+
+## Summary
+
 This tool is made of three technologies, Packer, Vagrant and Ansible, allowing us to generate an Ubuntu 18.10 VirtualBox 
 image (and Vagrant box) packaged with softwares for Bitcoin / Lightning Network. You can find Bitcoin Core, LND, c-lightning, 
 Electrum, a BitcoinJS guide, etc. <br/>
