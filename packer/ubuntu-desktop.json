@@ -13,6 +13,7 @@
     "ubuntu_mirror": "http://archive.ubuntu.com/ubuntu/dists/",
     "version": "1.0.{{timestamp}}"
   },
+  "sensitive-variables": ["cloud_token"],
 
   "builders":
   [
@@ -101,7 +102,7 @@
         "access_token": "{{user `cloud_token`}}",
         "box_tag": "bitcoin-studio/Bitcoin-VirtualMachine",
         "no_release": false,
-        "version_description": "Ubuntu 18.10 VirtualBox image packaged with softwares for Bitcoin / Lightning Network. You can find Bitcoin Core, LND, c-lightning, Electrum, a BitcoinJS guide, etc. \nThe image is ideal for Bitcoin workshops, hackathons, etc.",
+        "version_description": "Ubuntu 18.10 VirtualBox image packaged with softwares for Bitcoin / Lightning Network like Bitcoin Core, LND, c-lightning, Electrum, a BitcoinJS guide, etc. The image is ideal for Bitcoin workshops, hackathons, etc. Have a look at the readme of this project to learn how to run the box => https://github.com/bitcoin-studio/Bitcoin-VirtualMachine",
         "version": "{{user `version`}}"
       }
     ]
