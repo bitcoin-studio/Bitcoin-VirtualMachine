@@ -1,25 +1,9 @@
 Vagrant.configure("2") do |config|
-  config.vm.provider :virtualbox do |virtualbox, override|
-    virtualbox.gui = true
-    virtualbox.customize ["modifyvm", :id, "--cpus", 3]
-    virtualbox.customize ["modifyvm", :id, "--audiocontroller", "hda"]
-    virtualbox.customize ["modifyvm", :id, "--memory", 4096]
-    virtualbox.customize ["modifyvm", :id, "--accelerate2dvideo", "on"]
-    virtualbox.customize ["modifyvm", :id, "--vram", 128]
-    virtualbox.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
-  end
-
   config.ssh.username = "bitcoin"
-  config.ssh.insert_key = false
   config.vm.boot_timeout = 800
-  config.ssh.private_key_path = ["vagrant-rsa", "~/.vagrant.d/insecure_private_key"]
-  config.vm.provision "file", source: "vagrant-rsa.pub", destination: "~/.ssh/authorized_keys"
-
-  config.vm.provision "ansible" do |ansible|
-    ansible.compatibility_mode = '2.0'
-    ansible.playbook = "../ansible/playbook.yml"
-    ansible.extra_vars = { ansible_python_interpreter:"/usr/bin/python3" }
+  #config.vm.synced_folder ".", "/home/bitcoin/Desktop/shared"
+  config.vm.provider :virtualbox do |vb|
+    vb.name = "bitcoin-virtual-machine"
+    vb.gui = true
   end
-
-  config.vm.synced_folder "shared/", "/home/bitcoin/Desktop/shared"
 end

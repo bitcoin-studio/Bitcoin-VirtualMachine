@@ -1,8 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 
-credentials
-
-
 ### Packer template
 # Cache objects
 packer/packer_cache/
