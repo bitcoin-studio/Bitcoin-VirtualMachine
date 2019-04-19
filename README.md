@@ -1,15 +1,18 @@
 # Machine image builder focused on Bitcoin
 
+**Quick Start**: _Install Vagrant and Virtualbox. 
+Then open a CLI terminal, and run `vagrant init bitcoin-studio/Bitcoin-VirtualMachine; vagrant up;`. 
+Or download the [VirtualBox image](https://keybase.pub/janakasteph/Bitcoin-VirtualMachine) and double-click the .ovf file. 
+You're now in an environment with lnd and other Bitcoin tools. If that doesn't work, read further on in this guide for more details._
+
+## Summary
+
 This tool is made of three technologies, Packer, Vagrant and Ansible, allowing us to generate an Ubuntu 18.10 VirtualBox 
-image (and Vagrant box) packaged with softwares for Bitcoin / Lightning Network. You can find Bitcoin Core, LND, c-lightning, 
+image and a Vagrant box packaged with softwares for Bitcoin / Lightning Network. You can find Bitcoin Core, LND, c-lightning, 
 Electrum, a BitcoinJS guide, etc. <br/>
-The image is ideal for Bitcoin workshops, hackathons, etc.
+The image is ideal for Bitcoin workshops, hackathons, etc. <br/>
+The VirtualBox image itself is not included in this repository. 
 
-
-## What is inside
-
-The VirtualBox image itself is not included in this repository, you need to generate it yourself with the `packer build` command, see below.
-It usually takes between 30 minutes and 2 hours, depending on your internet connection and the speed of the Ubuntu mirror server.
 
 ### Operating System
 
@@ -54,6 +57,12 @@ You can deactivate installation of what you don't want by removing roles in the 
 
 Included right on the desktop is the extensive [BitcoinJS guide](https://github.com/bitcoin-studio/Bitcoin-Programming-with-BitcoinJS)
 made by Stéphane Roche from Bitcoin-Studio. You can explore it to learn how to do all kinds of Bitcoin transaction.
+
+
+### VirtualBox Guest Additions
+
+VirtualBox Guest Additions has been installed to give you the ability to copy/paste and drag/drop between your host 
+machine and the VM.
 
 
 ## How to import and launch the VM
@@ -103,6 +112,7 @@ $ vagrant ssh
 
 We use Packer to create the VirtualBox virtual image and a vagrant box.
 Ansible is used to provision the virtual image.
+It usually takes between 30 minutes and 2 hours, depending on your internet connection and the speed of the Ubuntu mirror server.
 
 ### Packer
 > You will need to remove the `vagrant-cloud` post-processor from [packer/template.json](packer/template.json)
@@ -111,7 +121,7 @@ Ansible is used to provision the virtual image.
 Generate the virtualbox image and the vagrant box
 ```
 $ cd packer
-$ PACKER_LOG=1 PACKER_LOG_PATH=packer.log NAME=bitcoin-virtual-machine UBUNTU_CODENAME=cosmic packer build -force -on-error=ask template.json
+$ PACKER_LOG=1 PACKER_LOG_PATH=packer.log packer build -force -on-error=ask template.json
 ```
 
 Keep an eye on the log

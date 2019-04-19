@@ -5,16 +5,15 @@
     "disk_size": "51200",
     "headless": "false",
     "memory": "4096",
-    "name": "{{ env `NAME` }}",
+    "name": "bitcoin-virtual-machine-{{timestamp}}",
     "preseed_file_name": "preseed.cfg",
     "ssh_username": "bitcoin",
     "ssh_password": "bitcoin",
-    "ubuntu_codename": "{{ env `UBUNTU_CODENAME` }}",
+    "ubuntu_codename": "cosmic",
     "ubuntu_mirror": "http://archive.ubuntu.com/ubuntu/dists/",
     "version": "1.0.{{timestamp}}"
   },
   "sensitive-variables": ["cloud_token"],
-
   "builders":
   [
     {
