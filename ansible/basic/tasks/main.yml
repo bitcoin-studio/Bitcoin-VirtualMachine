@@ -7,7 +7,7 @@
 
 - name: Add repositories
   become: yes
-  apt_repository: repo='{{item}}' update_cache=yes state=present
+  apt_repository: repo='{{item}}' state=present
   with_items:
     - ppa:webupd8team/brackets
     - ppa:jonathonf/vim
@@ -15,12 +15,36 @@
     - deb http://archive.ubuntu.com/ubuntu/ cosmic-updates universe
     - deb http://security.ubuntu.com/ubuntu/ cosmic-security universe
 
-- name: Update repositories cache and install packages
+- name: Install Aptitude (Ansible can't find it otherwise)
+  become: yes
+  apt:
+    name: aptitude
+
+- name: Update all packages to the latest version
+  become: yes
+  apt:
+    upgrade: full
+  register: output
+
+- name: Check changes
+  set_fact:
+    updated: true
+  when: output.stdout is not search("0 upgraded, 0 newly installed")
+
+- name: Display changes
+  debug:
+    msg: "{{ output.stdout_lines }}"
+  when: updated is defined
+
+
+# New packages
+- name: Install packages
   become: yes
   apt:
     name: [
       'brackets',
       'curl',
+      'dkms',
       'git',
       'gnome-tweak-tool',
       'jq',
@@ -28,7 +52,6 @@
       'vim'
     ]
     state: latest
-    update_cache: yes
 
 - name: Download Libbitcoin-explorer
   become_user: bitcoin
@@ -44,4 +67,5 @@
     url: https://download.electrum.org/3.3.4/electrum-3.3.4-x86_64.AppImage
     dest: /home/bitcoin/Desktop/Electrum.AppImage
     mode: 0755
+    timeout: 30
 ...

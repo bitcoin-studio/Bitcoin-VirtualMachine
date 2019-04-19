@@ -1,7 +1,7 @@
 ---
 # tasks file for lnd
 
-- name: Get LND repo
+- name: Download LND repository branch master
   become_user: bitcoin
   shell: go get -d github.com/lightningnetwork/lnd
   environment:

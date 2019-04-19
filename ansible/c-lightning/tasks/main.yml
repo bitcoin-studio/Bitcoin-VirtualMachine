@@ -17,7 +17,7 @@
     ]
     state: latest
 
-- name: Git clone c-lightning
+- name: Git clone c-lightning branch master
   become_user: bitcoin
   git:
     repo: 'https://github.com/ElementsProject/lightning.git'
