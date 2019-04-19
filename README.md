@@ -14,7 +14,7 @@ It usually takes between 30 minutes and 2 hours, depending on your internet conn
 ### Operating System
 
 Ubuntu 18.10 Cosmic - desktop version.
-The [preseed.cfg](packer/http/ubuntu-desktop/preseed.cfg) file is used to do an automatic install.
+The [preseed.cfg](packer/http/preseed.cfg) file is used to do an automatic install.
 
 ### Softwares
 
@@ -65,13 +65,18 @@ There are two ways to launch the VM, from VirtualBox or from Vagrant.
 After a build you will find two files in the `packer/outputs` directory, a .ovf and a .vmdk.  
 To import the image into VirtualBox you can double-click on the `.ovf` file or select it from the VirtualBox import panel.
 
-You have to uncheck "Import hard drives as VDI", otherwise you get a `NS_ERROR_INVALID_ARG (0x80070057)` error.
+If you get a `NS_ERROR_INVALID_ARG (0x80070057)` error, try to uncheck "Import hard drives as VDI".  
 
-After importation you can select it and click start.
 
 ### Using Vagrant
 
-With Vagrant, you have to add the Vagrant box to Vagrant and run it. See the Vagrant section below.
+Launch the VM
+```
+$ vagrant init bitcoin-studio/Bitcoin-VirtualMachine
+$ vagrant up
+```
+
+`vagrant init` will import the box hosted on [Vagrant Cloud](https://app.vagrantup.com/bitcoin-studio/boxes/Bitcoin-VirtualMachine).
 
 
 ## How to login
@@ -83,6 +88,16 @@ When you launch the VM it has auto-login feature activated.
 
 If you want to connect in command-line from the host machine, you can do it with `vagrant ssh`, see below.
 
+### SSH connection to VM via vagrant
+
+Vagrant will use "insecure" SSH keypair provided by Hashicorp.
+
+Establish a SSH connection
+> If the SSH keys are ok you should not be asked for a password, otherwise password is "bitcoin"
+```
+$ vagrant ssh
+```
+
 
 ## How to generate a VM image 
 
@@ -90,18 +105,13 @@ We use Packer to create the VirtualBox virtual image and a vagrant box.
 Ansible is used to provision the virtual image.
 
 ### Packer
-> You will need to remove the `vagrant-cloud` post-processor from [packer/ubuntu-desktop.json](packer/ubuntu-desktop.json)
+> You will need to remove the `vagrant-cloud` post-processor from [packer/template.json](packer/template.json)
 > to avoid Vagrant Cloud authentication error. 
-
-Avoid Ansible failing with `Failed to connect to the host via ssh`
-```
-$ export ANSIBLE_HOST_KEY_CHECKING=False
-```
 
 Generate the virtualbox image and the vagrant box
 ```
 $ cd packer
-$ PACKER_LOG=1 PACKER_LOG_PATH=packer.log NAME=bitcoin-virtual-machine UBUNTU_CODENAME=cosmic packer build -force -on-error=ask ubuntu-desktop.json
+$ PACKER_LOG=1 PACKER_LOG_PATH=packer.log NAME=bitcoin-virtual-machine UBUNTU_CODENAME=cosmic packer build -force -on-error=ask template.json
 ```
 
 Keep an eye on the log
@@ -112,71 +122,9 @@ $ tail -f packer.log
 #### Setting a Ubuntu mirror server
 
 If the OS installation is too slow you can set an other Ubuntu mirror in the 
-[preseed.cfg](packer/http/ubuntu-desktop/preseed.cfg) file, choosing one close to your location.
+[preseed.cfg](packer/http/preseed.cfg) file, choosing one close to your location.
 > Line: d-i mirror/http/hostname string MIRROR
 
-### Vagrant
-
-In order to run our box we can `add` the one created by packer.
-Or if you don't add the box, `vagrant init` will simply import the one hosted on [Vagrant Cloud](https://app.vagrantup.com/bitcoin-studio/boxes/Bitcoin-VirtualMachine).
-
-Add the box to Vagrant
-```
-$ vagrant box add --name bitcoin-studio/Bitcoin-VirtualMachine packer/outputs/bitcoin-virtual-machine.box
-```
-
-Launch the VM
-> We need to cd into `./vagrant` because the ssh keys are there, and to have everything Vagrant related in this directory
-```
-$ cd vagrant
-$ vagrant init bitcoin-studio/Bitcoin-VirtualMachine
-$ vagrant up
-```
-
-Run the Ansible provisioning against the vagrant box
-```
-$ vagrant provision bitcoin-studio/Bitcoin-VirtualMachine
-```
-
-Print the Vagrantfile included in the box
-```
-$ tar -O -xf packer/outputs/bitcoin-virtual-machine.box Vagrantfile
-```
-
-#### SSH connection to VM via vagrant
-
-Generate a new ssh key pair
-> I place them into `./vagrant` directory, named `vagrant-rsa` and `vagrant-rsa.pub`
-```
-$ cd vagrant
-$ ssh-keygen
-> Enter file in which to save the key (/Users/steph/.ssh/id_rsa): vagrant-rsa
-```
-
-The script [vagrant.sh](packer/scripts/linux-common/vagrant.sh) is used by Ansible to copy the ssh public key to the VM. 
-The key is hardcoded there, if you generate a new key pair you have to replace the public key in the script.
-
-If you prefer to copy the ssh public key to the VM manually instead of using the script
-```
-$ cd vagrant
-$ cat vagrant-rsa.pub | ssh bitcoin@127.0.0.1 -p 2222 "mkdir -p ~/.ssh && touch ~/.ssh/authorized_keys && chmod -R go= ~/.ssh && cat >> ~/.ssh/authorized_keys"
-```
-
-Establish a SSH connection
-> If the SSH keys are ok you should not be asked for a password
-```
-$ vagrant ssh
-```
-
-#### Shared folder
-
-Vagrant allows you to have a shared folder between your host machine (at `vagrant/shared`) and the guest VM 
-(at `/home/bitcoin/Desktop`).
-
-You need to install vagrant-vbguest
-```
-$ vagrant plugin install vagrant-vbguest
-```
 
 ### Ansible
 
