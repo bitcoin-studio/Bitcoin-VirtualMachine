@@ -53,18 +53,23 @@
     ]
     state: latest
 
+# Libbitcoin-explorer
 - name: Download Libbitcoin-explorer
   become_user: bitcoin
   get_url:
-    url: https://github.com/libbitcoin/libbitcoin-explorer/releases/download/v3.2.0/bx-linux-x64-qrcode
-    dest: /home/bitcoin/Desktop/bx
+    url: https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version3/install.sh
+    dest: /home/bitcoin/Downloads/bx_install.sh
     force: yes
     mode: 0755
 
+- name: Run bx install script
+  script: /home/bitcoin/Downloads/bx_install.sh --prefix=/home/bitcoin --build-boost --build-zmq --disable-shared
+
+# Electrum
 - name: Download Electrum
   become_user: bitcoin
   get_url:
-    url: https://download.electrum.org/3.3.4/electrum-3.3.4-x86_64.AppImage
+    url: https://download.electrum.org/3.3.8/electrum-3.3.8-x86_64.AppImage
     dest: /home/bitcoin/Desktop/Electrum.AppImage
     mode: 0755
     timeout: 30
