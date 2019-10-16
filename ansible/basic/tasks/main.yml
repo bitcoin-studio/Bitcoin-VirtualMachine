@@ -37,7 +37,19 @@
   when: updated is defined
 
 
-# New packages
+# Uncomment if necessary
+#- name: Install build tools
+#  become: yes
+#  apt:
+#    name: [
+#      'build-essential',
+#      'autoconf',
+#      'automake',
+#      'libtool',
+#      'pkg-config'
+#    ]
+#    state: latest
+
 - name: Install packages
   become: yes
   apt:
@@ -54,16 +66,28 @@
     state: latest
 
 # Libbitcoin-explorer
+#- name: Download Libbitcoin-explorer
+#  become_user: bitcoin
+#  get_url:
+#    url: https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version3/install.sh
+#    dest: /home/bitcoin/Downloads
+#    force: yes
+#    mode: 0755
+
+# This makes Ansible to freeze
+#- name: Run bx install script
+#  become: yes
+#  shell: /home/bitcoin/Downloads/install.sh --prefix=/home/bitcoin --build-boost --build-zmq --disable-shared >> bx_install_logs.txt
+#  args:
+#    executable: /bin/bash
+
 - name: Download Libbitcoin-explorer
   become_user: bitcoin
   get_url:
-    url: https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version3/install.sh
-    dest: /home/bitcoin/Downloads/bx_install.sh
+    url: https://github.com/libbitcoin/libbitcoin-explorer/releases/download/v3.2.0/bx-linux-x64-qrcode
+    dest: /home/bitcoin/Desktop/bx
     force: yes
     mode: 0755
-
-- name: Run bx install script
-  script: /home/bitcoin/Downloads/bx_install.sh --prefix=/home/bitcoin --build-boost --build-zmq --disable-shared
 
 # Electrum
 - name: Download Electrum

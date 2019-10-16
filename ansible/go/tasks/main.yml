@@ -4,13 +4,13 @@
 - name: Download Go
   become_user: bitcoin
   get_url:
-    url: https://dl.google.com/go/go1.11.5.linux-amd64.tar.gz
+    url: https://dl.google.com/go/go1.13.linux-amd64.tar.gz
     dest: /home/bitcoin/Downloads
-    checksum: sha256:ff54aafedff961eb94792487e827515da683d61a5f9482f668008832631e5d25
+    checksum: sha256:68a2297eb099d1a76097905a2ce334e3155004ec08cdea85f24527be3c48e856
 
 - name: Unarchive and move Go to /usr/local
   unarchive:
-    src: /home/bitcoin/Downloads/go1.11.5.linux-amd64.tar.gz
+    src: /home/bitcoin/Downloads/go1.13.linux-amd64.tar.gz
     dest: /usr/local
     remote_src: yes
 
